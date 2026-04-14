@@ -1,36 +1,52 @@
 from Cliente import Cliente
-# arquivo.py o nome da nossa classe
+#    arquivo.py    o nome da nossa classe
+from Criar_conta import Criar_conta
+from adicionar_conta import Adicionar_conta
 import pandas as pd
+import os
 
 caminho_excel = "cliente_banco_Tabajara.xlsx"
 
-print((f"\nMenu de opções:\n\n1 - Criar conta\n2 - Acessar conta\n\nOpcao digitada: \n"))
-
+print("================================================")
+print("                 BANCO TABAJARA")
+print("                                 ")
+print("                 Escolha uma opção")
+print("                 1 - Criar conta")
+print("                 2 - Acessar conta")
+print("================================================\n")
 opcao = int(input("R: "))
 
 if opcao == 1:
-    print("Opcao 1 Selecionada.\n")
-    nome_cliente = input("Digite seu nome completo: ")
-    cpf = input("Digite seu CPF: ")
-    tipo_conta = input("Digite seu tipo de conta, Corrente, Poupança ou Salario: ")
-    numero_conta = 0
-    numero_agencia = 400
-    extrato_bancario = 0
+    print("Opcao 1 selecionada")
+    nome_cliente = str(input("Nome completo: "))
+    cpf = int(input("CPF: "))
+    tipo_conta  = str(input("Tipo da conta que deseja criar:  "))
+    
+    df = pd.DataFrame()
 
-    # Instancio o cliente
-    cliente = Cliente(nome_cliente, cpf, tipo_conta, numero_conta, numero_agencia, extrato_bancario)
+    if os.path.exists(caminho_excel): # true
+        print("Arquivo ja existe")
+        df = pd.read_excel(caminho_excel)
 
-    dados_cliente = {
-        "nome_cliente":    [cliente.nome_cliente],
-        "tipo_conta":       [cliente.tipo_conta],
-        "numero_conta":     [cliente.numero_conta],
-        "cpf":              [cliente.cpf],
-        "agencia":          [cliente.numero_agencia],
-        "extrato_bancario": [cliente.extrato_bancario],
-    }
+        # Instanciado o dicionario conta
+        adicionar = Adicionar_conta(nome_cliente, cpf, tipo_conta)
 
-    excel = pd.DataFrame(cliente)
-    excel.to_excel(caminho_excel, index=False)
+        # Chamando a função adicionar que está dentro da classe Adicionar_conta
+        novo_dado = adicionar.adicionar(df)
+
+    else: # false
+        print("Arquivo nao existe")
+
+        # Instancio para manipular os dados adicionados pelo cliente
+        conta = Criar_conta(nome_cliente, cpf, tipo_conta)
+
+        # Identifico o caminho do excel e chamo a funcao salvar_excel
+        novo_dado = conta.salvar_excel(caminho_excel)
+
+    #Concat para inserir uma nova linha no excel com os dados digitados pelo usuario
+    df = pd.concat([df, novo_dado], ignore_index=True)
+
+    df.to_excel(caminho_excel, index=False)
 
 elif opcao == 2:
-    print("Opcao 2 Selecionada.")
+    print("Opcao 2 selecionada")
