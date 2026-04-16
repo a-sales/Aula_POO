@@ -2,8 +2,10 @@ from Cliente import Cliente
 #    arquivo.py    o nome da nossa classe
 from Criar_conta import Criar_conta
 from adicionar_conta import Adicionar_conta
+from acessar_conta import acessar_conta
 import pandas as pd
 import os
+
 
 caminho_excel = "cliente_banco_Tabajara.xlsx"
 
@@ -50,3 +52,12 @@ if opcao == 1:
 
 elif opcao == 2:
     print("Opcao 2 selecionada")
+
+    # Validar se o CPF informado e o numero_conta são os mesmos
+    cpf = int(input("CPF: "))
+    numero_conta = int(input("Digite o número da conta: "))
+
+    acesso = acessar_conta(cpf, numero_conta)
+    acesso.validar_banco(caminho_excel)
+    
+
