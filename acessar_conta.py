@@ -17,6 +17,9 @@ class Acessar_conta:
         #print(cliente_encontrado)
         # Se o cliente for encontrado então mostrar a mensagem Bem-vindo e trazer os dados solicitados
         if not cliente_encontrado.empty:
-            print("Bem-vindo ao banco Tabajara")
+            nome = cliente_encontrado.iloc[0]["nome_cliente"]
+            print(f"Olá {nome}, bem-vindo ao banco Tabajara")
+            return True
         else:
             print("Usuário não encontrado, tentar novamente ou realizar o cadastro")
+            return False
