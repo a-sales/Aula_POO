@@ -1,21 +1,21 @@
 import pandas as pd
 from Cliente import Cliente
 
-class acessar_conta:
+class Acessar_conta:
     def __init__(self, cpf, numero_conta):
-        
-        self.cliente = Cliente(cpf, numero_conta)
+        self.cliente = Cliente(nome_cliente='', cpf=cpf, tipo_conta='', 
+        numero_conta=numero_conta, agencia=400, extrato_bancario=0)
 
     # Metodo
     def validar_banco(self, caminho_excel):
         df = pd.read_excel(caminho_excel)
 
         cliente_encontrado = df[
-            (df["cpf"] == self.cliente.cpf) & (df["numero_conta"] == self.cliente.numero_conta)
-
+            (df["cpf"].astype(str) == str(self.cliente.cpf)) &
+            (df["numero_conta"].astype(str) == str(self.cliente.numero_conta))
         ]
-
-        # Se o cliente for encontrado então mostrar a mensagem bem-vindo e trazer os dados solicitados
+        #print(cliente_encontrado)
+        # Se o cliente for encontrado então mostrar a mensagem Bem-vindo e trazer os dados solicitados
         if not cliente_encontrado.empty:
             print("Bem-vindo ao banco Tabajara")
         else:

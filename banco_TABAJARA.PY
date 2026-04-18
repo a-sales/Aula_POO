@@ -1,11 +1,10 @@
 from Cliente import Cliente
 #    arquivo.py    o nome da nossa classe
 from Criar_conta import Criar_conta
-from adicionar_conta import Adicionar_conta
-from acessar_conta import acessar_conta
+from Adicionar_conta import Adicionar_conta
+from Acessar_conta import Acessar_conta
 import pandas as pd
 import os
-
 
 caminho_excel = "cliente_banco_Tabajara.xlsx"
 
@@ -21,20 +20,20 @@ opcao = int(input("R: "))
 if opcao == 1:
     print("Opcao 1 selecionada")
     nome_cliente = str(input("Nome completo: "))
-    cpf = int(input("CPF: "))
+    cpf = str(input("CPF: "))
     tipo_conta  = str(input("Tipo da conta que deseja criar:  "))
-    
-    df = pd.DataFrame()
 
+    df = pd.DataFrame()
+    
     if os.path.exists(caminho_excel): # true
         print("Arquivo ja existe")
         df = pd.read_excel(caminho_excel)
 
-        # Instanciado o dicionario conta
-        adicionar = Adicionar_conta(nome_cliente, cpf, tipo_conta)
+        #Instanciado o dicionar Conta
+        adicinar = Adicionar_conta(nome_cliente, cpf, tipo_conta)
 
-        # Chamando a função adicionar que está dentro da classe Adicionar_conta
-        novo_dado = adicionar.adicionar(df)
+        # Chamando a funcao adicionar que está dentro da classe Adicionar_conta
+        novo_dado = adicinar.adicionar(df)
 
     else: # false
         print("Arquivo nao existe")
@@ -45,19 +44,20 @@ if opcao == 1:
         # Identifico o caminho do excel e chamo a funcao salvar_excel
         novo_dado = conta.salvar_excel(caminho_excel)
 
-    #Concat para inserir uma nova linha no excel com os dados digitados pelo usuario
+
+    #Concat para inserir uma nova linha no excel com os dados digitados pelo
     df = pd.concat([df, novo_dado], ignore_index=True)
 
     df.to_excel(caminho_excel, index=False)
 
+    #print(novo_dado)
+
 elif opcao == 2:
     print("Opcao 2 selecionada")
 
-    # Validar se o CPF informado e o numero_conta são os mesmos
-    cpf = int(input("CPF: "))
+    # validar se o CPF informado e o numero_conta são os mesmo
+    cpf = str(input("CPF: "))
     numero_conta = int(input("Digite o número da conta: "))
 
-    acesso = acessar_conta(cpf, numero_conta)
+    acesso = Acessar_conta(cpf, numero_conta)
     acesso.validar_banco(caminho_excel)
-    
-
